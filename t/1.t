@@ -5,8 +5,16 @@
 
 # change 'tests => 1' to 'tests => last_test_to_print';
 
-use Test::More tests => 1;
-BEGIN { use_ok('DCOP::Amarok::Player') };
+use Test::Simple tests => 2;
+
+use DCOP::Amarok::Playlist;
+
+my $playlist = DCOP::Amarok::Playlist->new();
+
+ok( defined $playlist, "new() defined the object" );
+
+ok( $playlist->isa(DCOP::Amarok::Playlist), "   Object belongs to the class" );
+
 
 #########################
 

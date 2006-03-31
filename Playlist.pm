@@ -8,7 +8,7 @@ require DCOP::Amarok;
 
 our @ISA = qw(DCOP::Amarok);
 
-our $VERSION = '0.003';
+our $VERSION = '0.004';
 
 =head1 NAME
 
@@ -42,11 +42,11 @@ need for 'user => "myusername"' arises.
 =cut
 
 sub new {
-	my $proto = shift;
-	my $class = ref($proto) || $proto;
+	my $proto  = shift;
+	my $class  = ref($proto) || $proto;
 	my %params = @_;
-	my $self  = $class->SUPER::new(%params, control => "playlist" );
-	bless ($self, $class);
+	my $self   = $class->SUPER::new( %params, control => "playlist" );
+	bless( $self, $class );
 	return $self;
 }
 
@@ -119,31 +119,10 @@ sub saveCurrentPlaylist() {
 
 sub addMedia() {
 	my $self = shift;
-	while(@_){
-		system( "$self->{dcop}", 'addMedia', "$_");
+	while (@_) {
+		system( "$self->{dcop}", "addMedia", "$_" );
 	}
 }
-
-
-#sputnik@zeus:~$ dcop amarok playlist
-#QCStringList interfaces()
-#	QCStringList functions()
-#	int getActiveIndex()
-#	int getTotalTrackCount()
-#	QString saveCurrentPlaylist()
-#	void addMedia(KURL)
-#	void addMediaList(KURL::List)
-#	void clearPlaylist()
-#	void playByIndex(int)
-#	void playMedia(KURL)
-#	void popupMessage(QString)
-#	void removeCurrentTrack()
-#	void repopulate()
-#	void saveM3u(QString path,bool relativePaths)
-#	void setStopAfterCurrent(bool)
-#	void shortStatusMessage(QString)
-#	void shufflePlaylist()
-#	void togglePlaylist()
 
 =item addMediaList()
 
@@ -153,7 +132,7 @@ sub addMedia() {
 
 sub addMediaList() {
 	my $self = shift;
-	system( "$self->{dcop}", 'addMediaList', "@_");
+	system( "$self->{dcop}", "addMediaList", "@_" );
 }
 
 =item clearPlaylist()
@@ -163,51 +142,72 @@ sub addMediaList() {
 
 sub clearPlaylist() {
 	my $self = shift;
-	system( "$self->{dcop}", 'clearPlaylist' );
+	system( "$self->{dcop}", "clearPlaylist" );
 }
 
-=item playByIndex(int)
+=item playByIndex($index)
 
-	Plays by index
+	Plays the song in the $index position.
 
 =cut
 
 sub playByIndex() {
 	my $self = shift;
-	system( "$self->{dcop}", 'playByIndex' );
+	my $index = shift;
+	system( "$self->{dcop}", "playByIndex", "$index" );
 }
 
-=item playMedia()
+=item playMedia($uri)
 
+	Play a specific object. 
 
 =cut
 
 sub playMedia() {
 	my $self = shift;
-	my $url = shift;
+	my $url  = shift;
 	system( "$self->{dcop}", "playMedia", "$url" );
 }
 
-=item popupMessage()
+=item popupMessage($msg)
 
+	Pops up $msg in screen.
 
 =cut
 
 sub popupMessage() {
 	my $self = shift;
-	my $msg = shift;
+	my $msg  = shift;
 	system( "$self->{dcop}", "popupMessage", "$msg" );
 }
+
+=item removeCurrentTrack()
+
+	Removes current track from playlist
+
+=cut
 
 sub removeCurrentTrack() {
 	my $self = shift;
 	system( "$self->{dcop}", "removeCurrentTrack" );
 }
 
+=item repopulate()
+
+	Repopulate playlist.
+
+=cut
+
 sub repopulate() {
 	my $self = shift;
 	system( "$self->{dcop}", "repopulate" );
 }
+
+=item saveM3uRelative($path)
+
+	Saves the M3U file with a relavtive path.
+
+=cut
 
 sub saveM3uRelative() {
 	my $self = shift;
@@ -215,40 +215,76 @@ sub saveM3uRelative() {
 	system( "$self->{dcop}", "saveM3u", "$path", "1" );
 }
 
+=item saveM3uAbsolut($path)
+
+	Saves the M3U file with an absolut path.
+
+=cut
+
 sub saveM3uAbsolut() {
 	my $self = shift;
 	my $path = shift;
 	system( "$self->{dcop}", "saveM3u", "$path", "0" );
 }
 
+=item setStopAfterCurrent()
+
+	Enable StopAfterCurrent track.
+
+=cut
+
 sub setStopAfterCurrent() {
 	my $self = shift;
 	system( "$self->{dcop}", "setStopAfterCurrent", "1" );
 }
+
+=item notStopAfterCurrent()
+
+	Disable StopAfterCurrent track.
+
+=cut
 
 sub notStopAfterCurrent() {
 	my $self = shift;
 	system( "$self->{dcop}", "setStopAfterCurrent", "0" );
 }
 
+=item shortStatusMessage($msg)
+
+	Display $msg in the status bar.
+
+=cut
+
 sub shortStatusMessage() {
 	my $self = shift;
-	my $msg = shift;
+	my $msg  = shift;
 	system( "$self->{dcop}", "shortStatusMessage", "$msg" );
 }
+
+=item shufflePlaylist()
+
+	Shuffle playlist.
+
+=cut
 
 sub shufflePlaylist() {
 	my $self = shift;
 	system( "$self->{dcop}", "shufflePlaylist" );
 }
 
-#	void togglePlaylist()
+=item togglePlaylist()
+
+	Show/Hide playlist.
+
+=cut
+
 sub togglePlaylist() {
 	my $self = shift;
 	system( "$self->{dcop}", "togglePlaylist" );
 }
 
 1;
+
 __END__
 
 =head1 AUTHOR
