@@ -1,9 +1,10 @@
+# http://module-build.sourceforge.net/META-spec.html
 #XXXXXXX This is a prototype!!!  It will change in the future!!! XXXXX#
 name:         DCOP-Amarok-Playlist
-version:      0.005
+version:      0.006
 version_from: Playlist.pm
 installdirs:  site
 requires:
 
 distribution_type: module
-generated_by: ExtUtils::MakeMaker version 6.12
+generated_by: ExtUtils::MakeMaker version 6.30

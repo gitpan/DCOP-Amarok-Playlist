@@ -8,7 +8,7 @@ require DCOP::Amarok;
 
 our @ISA = qw(DCOP::Amarok);
 
-our $VERSION = '0.005';
+our $VERSION = '0.006';
 
 =head1 NAME
 
@@ -52,7 +52,7 @@ sub new {
 
 =item interfaces()
 
-	Returns a list of the interfaces.
+Returns a list of the interfaces.
 
 =cut
 
@@ -64,7 +64,7 @@ sub interfaces() {
 
 =item functions()
 
-	Returns a list of the functions.
+Returns a list of the functions.
 
 =cut
 
@@ -76,7 +76,7 @@ sub functions() {
 
 =item getActiveIndex()
 
-	Returns the number of the active index.
+Returns the number of the active index.
 
 =cut
 
@@ -88,7 +88,7 @@ sub getActiveIndex() {
 
 =item getTotalTrackCount()
 
-	Returns the total number of tracks in the playlist.
+Returns the total number of tracks in the playlist.
 
 =cut
 
@@ -100,8 +100,8 @@ sub getTotalTrackCount() {
 
 =item saveCurrentPlaylist()
 
-	Makes the object save the present list.
-	Returns the path.
+Makes the object save the present list.
+Returns the path.
 
 =cut
 
@@ -113,26 +113,26 @@ sub saveCurrentPlaylist() {
 
 =item addMedia($URL)
 
-	Adds new media.
+Adds new media.
 
 =cut
 
 sub addMedia() {
 	my $self = shift;
 	while (@_) {
-		system( "$self->{dcop}", "addMedia", "$_" );
+		system( "$self->{dcop} addMedia $_" );
 	}
 }
 
 =item addMediaList()
 
-	Adds new media.
+Adds new media.
 
 =cut
 
 sub addMediaList() {
 	my $self = shift;
-	system( "$self->{dcop}", "addMediaList", "@_" );
+	system( "$self->{dcop} addMediaList @_" );
 }
 
 =item clearPlaylist()
@@ -142,12 +142,12 @@ sub addMediaList() {
 
 sub clearPlaylist() {
 	my $self = shift;
-	system( "$self->{dcop}", "clearPlaylist" );
+	system( "$self->{dcop} clearPlaylist" );
 }
 
 =item playByIndex($index)
 
-	Plays the song in the $index position.
+Plays the song in the $index position.
 
 =cut
 
@@ -159,128 +159,131 @@ sub playByIndex() {
 
 =item playMedia($uri)
 
-	Play a specific object. 
+Play a specific object. 
 
 =cut
 
 sub playMedia() {
 	my $self = shift;
 	my $url  = shift;
-	system( "$self->{dcop}", "playMedia", "$url" );
+	system( "$self->{dcop} playMedia $url" );
 }
 
 =item popupMessage($msg)
 
-	Pops up $msg in screen.
+Pops up $msg in screen.
+TODO: $msg has to escape white spaces with '\'.
+		e.g.   "Hi\\\ there";
+		e.g2.	 'I\ am\ here'
 
 =cut
 
 sub popupMessage() {
 	my $self = shift;
 	my $msg  = shift;
-	system( "$self->{dcop}", "popupMessage", "$msg" );
+	system( "$self->{dcop} popupMessage ${msg}" );
 }
 
 =item removeCurrentTrack()
 
-	Removes current track from playlist
+Removes current track from playlist
 
 =cut
 
 sub removeCurrentTrack() {
 	my $self = shift;
-	system( "$self->{dcop}", "removeCurrentTrack" );
+	system( "$self->{dcop} removeCurrentTrack" );
 }
 
 =item repopulate()
 
-	Repopulate playlist.
+Repopulate playlist.
 
 =cut
 
 sub repopulate() {
 	my $self = shift;
-	system( "$self->{dcop}", "repopulate" );
+	system( "$self->{dcop} repopulate" );
 }
 
 =item saveM3uRelative($path)
 
-	Saves the M3U file with a relavtive path.
+Saves the M3U file with a relavtive path.
 
 =cut
 
 sub saveM3uRelative() {
 	my $self = shift;
 	my $path = shift;
-	system( "$self->{dcop}", "saveM3u", "$path", "1" );
+	system( "$self->{dcop} saveM3u $path 1" );
 }
 
 =item saveM3uAbsolut($path)
 
-	Saves the M3U file with an absolut path.
+Saves the M3U file with an absolut path.
 
 =cut
 
 sub saveM3uAbsolut() {
 	my $self = shift;
 	my $path = shift;
-	system( "$self->{dcop}", "saveM3u", "$path", "0" );
+	system( "$self->{dcop} saveM3u $path 0" );
 }
 
 =item setStopAfterCurrent()
 
-	Enable StopAfterCurrent track.
+Enable StopAfterCurrent track.
 
 =cut
 
 sub setStopAfterCurrent() {
 	my $self = shift;
-	system( "$self->{dcop}", "setStopAfterCurrent", "1" );
+	system( "$self->{dcop} setStopAfterCurrent 1" );
 }
 
 =item notStopAfterCurrent()
 
-	Disable StopAfterCurrent track.
+Disable StopAfterCurrent track.
 
 =cut
 
 sub notStopAfterCurrent() {
 	my $self = shift;
-	system( "$self->{dcop}", "setStopAfterCurrent", "0" );
+	system( "$self->{dcop} setStopAfterCurrent 0" );
 }
 
 =item shortStatusMessage($msg)
 
-	Display $msg in the status bar.
+Display $msg in the status bar.
 
 =cut
 
 sub shortStatusMessage() {
 	my $self = shift;
 	my $msg  = shift;
-	system( "$self->{dcop}", "shortStatusMessage", "$msg" );
+	system( "$self->{dcop} shortStatusMessage $msg" );
 }
 
 =item shufflePlaylist()
 
-	Shuffle playlist.
+Shuffle playlist.
 
 =cut
 
 sub shufflePlaylist() {
 	my $self = shift;
-	system( "$self->{dcop}", "shufflePlaylist" );
+	system( "$self->{dcop} shufflePlaylist" );
 }
 
 =item togglePlaylist()
 
-	Show/Hide playlist.
+Show/Hide playlist.
 
 =cut
 
 sub togglePlaylist() {
 	my $self = shift;
-	system( "$self->{dcop}", "togglePlaylist" );
+	system( "$self->{dcop} togglePlaylist" );
 }
 
 1;
