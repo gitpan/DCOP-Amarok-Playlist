@@ -8,7 +8,7 @@ require DCOP::Amarok;
 
 our @ISA = qw(DCOP::Amarok);
 
-our $VERSION = '0.004';
+our $VERSION = '0.005';
 
 =head1 NAME
 
@@ -154,7 +154,7 @@ sub clearPlaylist() {
 sub playByIndex() {
 	my $self = shift;
 	my $index = shift;
-	system( "$self->{dcop}", "playByIndex", "$index" );
+	system( "$self->{dcop} playByIndex $index" );
 }
 
 =item playMedia($uri)
