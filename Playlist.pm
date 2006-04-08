@@ -8,7 +8,7 @@ require DCOP::Amarok;
 
 our @ISA = qw(DCOP::Amarok);
 
-our $VERSION = '0.006';
+our $VERSION = '0.007';
 
 =head1 NAME
 
@@ -41,9 +41,9 @@ need for 'user => "myusername"' arises.
 
 =cut
 
-sub new {
+sub new() {
 	my $proto  = shift;
-	my $class  = ref($proto) || $proto;
+	my $class  = ref( $proto ) || $proto;
 	my %params = @_;
 	my $self   = $class->SUPER::new( %params, control => "playlist" );
 	bless( $self, $class );
@@ -58,8 +58,7 @@ Returns a list of the interfaces.
 
 sub interfaces() {
 	my $self = shift;
-	chomp( my @list = `$self->{dcop} interfaces` );
-	return @list;
+	return $self->run( "interfaces" );
 }
 
 =item functions()
@@ -70,8 +69,7 @@ Returns a list of the functions.
 
 sub functions() {
 	my $self = shift;
-	chomp( my @list = `$self->{dcop} functions` );
-	return @list;
+	return $self->run( "functions" );
 }
 
 =item getActiveIndex()
@@ -82,8 +80,7 @@ Returns the number of the active index.
 
 sub getActiveIndex() {
 	my $self = shift;
-	chomp( $_ = `$self->{dcop} getActiveIndex` );
-	return $_;
+	return $self->run( "getActiveIndex" );
 }
 
 =item getTotalTrackCount()
@@ -94,8 +91,7 @@ Returns the total number of tracks in the playlist.
 
 sub getTotalTrackCount() {
 	my $self = shift;
-	chomp( $_ = `$self->{dcop} getTotalTrackCount` );
-	return $_;
+	return $self->run( "getTotalTrackCount" );
 }
 
 =item saveCurrentPlaylist()
@@ -107,8 +103,7 @@ Returns the path.
 
 sub saveCurrentPlaylist() {
 	my $self = shift;
-	chomp( $_ = `$self->{dcop} saveCurrentPlaylist` );
-	return $_;
+	return $self->run( "saveCurrentPlaylist" );
 }
 
 =item addMedia($URL)
@@ -119,8 +114,8 @@ Adds new media.
 
 sub addMedia() {
 	my $self = shift;
-	while (@_) {
-		system( "$self->{dcop} addMedia $_" );
+	while ( @_ ) {
+		$self->run( "addMedia", "$_" );
 	}
 }
 
@@ -132,7 +127,7 @@ Adds new media.
 
 sub addMediaList() {
 	my $self = shift;
-	system( "$self->{dcop} addMediaList @_" );
+	$self->run( "addMediaList", @_ );
 }
 
 =item clearPlaylist()
@@ -142,7 +137,7 @@ sub addMediaList() {
 
 sub clearPlaylist() {
 	my $self = shift;
-	system( "$self->{dcop} clearPlaylist" );
+	$self->run( "clearPlaylist" );
 }
 
 =item playByIndex($index)
@@ -152,9 +147,9 @@ Plays the song in the $index position.
 =cut
 
 sub playByIndex() {
-	my $self = shift;
+	my $self  = shift;
 	my $index = shift;
-	system( "$self->{dcop} playByIndex $index" );
+	$self->run( "playByIndex", "$index" );
 }
 
 =item playMedia($uri)
@@ -166,7 +161,7 @@ Play a specific object.
 sub playMedia() {
 	my $self = shift;
 	my $url  = shift;
-	system( "$self->{dcop} playMedia $url" );
+	$self->run( "playMedia", "$url" );
 }
 
 =item popupMessage($msg)
@@ -181,7 +176,7 @@ TODO: $msg has to escape white spaces with '\'.
 sub popupMessage() {
 	my $self = shift;
 	my $msg  = shift;
-	system( "$self->{dcop} popupMessage ${msg}" );
+	$self->run( "popupMessage", "$msg" );
 }
 
 =item removeCurrentTrack()
@@ -192,7 +187,7 @@ Removes current track from playlist
 
 sub removeCurrentTrack() {
 	my $self = shift;
-	system( "$self->{dcop} removeCurrentTrack" );
+	$self->run( "removeCurrentTrack" );
 }
 
 =item repopulate()
@@ -203,7 +198,7 @@ Repopulate playlist.
 
 sub repopulate() {
 	my $self = shift;
-	system( "$self->{dcop} repopulate" );
+	$self->run( "repopulate" );
 }
 
 =item saveM3uRelative($path)
@@ -215,19 +210,19 @@ Saves the M3U file with a relavtive path.
 sub saveM3uRelative() {
 	my $self = shift;
 	my $path = shift;
-	system( "$self->{dcop} saveM3u $path 1" );
+	$self->run( "saveM3u", "$path", "1" );
 }
 
-=item saveM3uAbsolut($path)
+=item saveM3uAbsolute($path)
 
 Saves the M3U file with an absolut path.
 
 =cut
 
-sub saveM3uAbsolut() {
+sub saveM3uAbsolute() {
 	my $self = shift;
 	my $path = shift;
-	system( "$self->{dcop} saveM3u $path 0" );
+	$self->run( "saveM3u", "$path", "0" );
 }
 
 =item setStopAfterCurrent()
@@ -238,7 +233,7 @@ Enable StopAfterCurrent track.
 
 sub setStopAfterCurrent() {
 	my $self = shift;
-	system( "$self->{dcop} setStopAfterCurrent 1" );
+	$self->run( "setStopAfterCurrent", "1" );
 }
 
 =item notStopAfterCurrent()
@@ -249,7 +244,7 @@ Disable StopAfterCurrent track.
 
 sub notStopAfterCurrent() {
 	my $self = shift;
-	system( "$self->{dcop} setStopAfterCurrent 0" );
+	$self->run( "setStopAfterCurrent", "0" );
 }
 
 =item shortStatusMessage($msg)
@@ -261,7 +256,7 @@ Display $msg in the status bar.
 sub shortStatusMessage() {
 	my $self = shift;
 	my $msg  = shift;
-	system( "$self->{dcop} shortStatusMessage $msg" );
+	$self->run( "shortStatusMessage", "$msg" );
 }
 
 =item shufflePlaylist()
@@ -272,7 +267,7 @@ Shuffle playlist.
 
 sub shufflePlaylist() {
 	my $self = shift;
-	system( "$self->{dcop} shufflePlaylist" );
+	$self->run( "shufflePlaylist" );
 }
 
 =item togglePlaylist()
@@ -283,7 +278,7 @@ Show/Hide playlist.
 
 sub togglePlaylist() {
 	my $self = shift;
-	system( "$self->{dcop} togglePlaylist" );
+	$self->run( "togglePlaylist" );
 }
 
 1;
