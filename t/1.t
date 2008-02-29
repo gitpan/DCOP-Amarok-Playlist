@@ -1,22 +1,11 @@
 #!/usr/bin/perl -w
 
-use Test::More tests => 30;
+use Test::More tests => 24;
 
 BEGIN { use_ok('DCOP::Amarok::Playlist') };
 my $playlist = DCOP::Amarok::Playlist->new( user => "$ENV{USER}" );
 ok( defined $playlist, "new() defined the object" );
 isa_ok( $playlist, "DCOP::Amarok::Playlist" );
-
-SKIP: {
-	skip( "Only works when amarok is installed", 6 ) unless ( `amarok --version` );
-	
-	ok( $playlist->interfaces(),			"   interfaces returned" );
-	ok( $playlist->functions(),				"   functions returned" );
-	ok( $playlist->getActiveIndex(),		"   index returned" );
-	ok( $playlist->getTotalTrackCount(), 	"   total tracks" );
-	is( $playlist->popupMessage('Testing\ feature'), "", "   Popup message" );
-	is( $playlist->shortStatusMessage("Amarok\\\ rocks"), "", "   Short Status Message" );
-}
 
 can_ok( $playlist, 'addMedia' );
 can_ok( $playlist, 'addMediaList' );
@@ -39,7 +28,3 @@ can_ok( $playlist, 'setStopAfterCurrent' );
 can_ok( $playlist, 'shortStatusMessage' );
 can_ok( $playlist, 'shufflePlaylist' );
 can_ok( $playlist, 'togglePlaylist' );
-
-TODO: {
-	local $TODO = "methods not yet implemented";
-}
